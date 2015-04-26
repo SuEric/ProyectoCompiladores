@@ -75,7 +75,7 @@ namespace ProyectoCompiladores
 
         public void countStatesInFile() //cuenta el numero de estados
         {
-            StreamReader file = new StreamReader(archivo); //Abre un stream para lectura del archivo
+            StreamReader file = new StreamReader(@archivo); //Abre un stream para lectura del archivo
             string line = file.ReadLine(); //Lee una linea
             while ((line = file.ReadLine()) != null)//Mientras la linea leida no sea nula
             {

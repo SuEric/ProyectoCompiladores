@@ -11,23 +11,24 @@
                             <Label x:Name="cursorPositionLabel" Content="" Width="264"/>
                         </StatusBarItem>
                     </StatusBar>
-                    <Menu HorizontalAlignment="Left" Height="28" Margin="10,46,0,0" VerticalAlignment="Top" Width="119">
+                    <Menu HorizontalAlignment="Left" Height="28" Margin="10,46,0,0" VerticalAlignment="Top" Width="265">
                         <Button x:Name="openFileButton" Height="24" Width="24" Click="openFileButton_Click">
                             <StackPanel>
                                 <Image Source="C:\Users\sueric16\Desktop\open.png" />
                                 <Label Content="Abrir archivo"></Label>
                             </StackPanel>
                         </Button>
+                        <Button x:Name="guardarButton" Content="Guardar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="24" Height="24" Click="guardarButton_Click"/>
                         <Button x:Name="compileButton" Width="24" Height="24" Click="compileButton_Click">
                             <StackPanel>
                                 <Image Source="C:\Users\sueric16\Desktop\run.png" />
-                                <Label Content="Compilar código"></Label>
+                                <Label Content="Compilar código"/>
                             </StackPanel>
                         </Button>
                         <Button x:Name="diagramButton" Height="24" Width="24" Click="diagramButton_Click">
                             <StackPanel>
                                 <Image Source="C:\Users\sueric16\Desktop\diagram.png"/>
-                                <Label Content="Pintar diagrama de clases"></Label>
+                                <Label Content="Pintar diagrama de clases"/>
                             </StackPanel>
                         </Button>
 

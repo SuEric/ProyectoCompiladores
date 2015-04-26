@@ -18,6 +18,7 @@ using WinForms = System.Windows.Forms;
 using UIOpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using System.IO;
 using System.Threading;
+using Microsoft.Win32;
 
 namespace ProyectoCompiladores
 {
@@ -28,6 +29,7 @@ namespace ProyectoCompiladores
     {
 
         String clasePrueba;
+        String rutaAchivo; 
         Analizador_lexico analizador_lexico;
         Analizador_Sintactico analizador_sintactico;
 
@@ -37,7 +39,7 @@ namespace ProyectoCompiladores
 
             editorRichTextBox.Document.PageWidth = 1000; // Sin esto no hay Scrolling horizontal
         }
-        
+
         private void editorRichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             // Punteros
@@ -53,7 +55,7 @@ namespace ProyectoCompiladores
             // Mostrar posición cursor en el Label del StatusBar
             cursorPositionLabel.Content = "Línea " + (-linea + 1) + ", Columna " + (columna);
         }
-        
+
         private void diagramButton_Click(object sender, RoutedEventArgs e)
         {
             // Cambiar de pestaña a diagramTabItem
@@ -71,7 +73,7 @@ namespace ProyectoCompiladores
 
             if (clasePrueba != null)
             {
-                analizador_lexico = new Analizador_lexico(@"C:\Users\sueric16\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
+                analizador_lexico = new Analizador_lexico(@"C:\Users\Legendary Dragon\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
                 analizador_lexico.cargarAutomata();
                 analizador_lexico.procesa(clasePrueba);
                 analizador_sintactico = new Analizador_Sintactico(analizador_lexico);
@@ -85,8 +87,8 @@ namespace ProyectoCompiladores
             {
                 MessageBox.Show("Debe escribir código o abrir un archivo primero");
             }
-            
-            
+
+
 
             // Errores
             String[] errores = new String[10];
@@ -110,6 +112,7 @@ namespace ProyectoCompiladores
 
             if (openFileDialog.ShowDialog() == WinForms.DialogResult.OK)
             {
+                rutaAchivo = openFileDialog.FileName;
                 // Objeto lectura de archivo
                 FileStream fileStream = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate);
 
@@ -122,6 +125,34 @@ namespace ProyectoCompiladores
 
                 fileStream.Close(); // Cierre del archivo
             }
+        }
+        // Botón que nos permite guardar cambios.
+
+        private void guardarButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            // Configuración del chooser
+            saveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            saveFileDialog.Filter = "txt files (*.txt)|*.txt|cs files(*.cs)|*.cs";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                rutaAchivo = saveFileDialog.FileName;
+                TextRange textRange = new TextRange(editorRichTextBox.Document.ContentStart,
+                                editorRichTextBox.Document.ContentEnd);
+                FileStream file = new FileStream(saveFileDialog.FileName, FileMode.Create);
+                textRange.Save(file, DataFormats.Text);
+
+                clasePrueba = textRange.Text;
+                file.Close();
+
+            }
+
+        
+         
+
         }
     }
 }
