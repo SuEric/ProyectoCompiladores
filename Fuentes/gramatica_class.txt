@@ -1,0 +1,21 @@
+Clase -> Mod class Id { Cont }
+
+Cont -> M Cont | ø
+M -> Mod E
+E -> Func | Attr
+Func -> Id ( Firma ) ;
+Attr -> Dec
+
+Dec -> Tipo S
+S -> Id K
+K -> , S | ø
+
+Sim -> letra Sim | digito Sim | ø
+Id -> letra Sim
+
+Firma -> F | ø
+F -> G A
+G -> Tipo Id
+A -> , F | ø
+
+Mod -> public | private | protected | ø

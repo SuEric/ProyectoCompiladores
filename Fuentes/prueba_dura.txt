@@ -1,0 +1,39 @@
+public class Prueba {
+	int x, y;
+	const int g = 10;
+
+	public void funcion1(char c, float f);
+	int funcion2(Prueba pruebita);
+}
+
+protected class QuePasion extends Prueba {
+	protected int x, y;
+	public const float a, b, c, d, e = 0.6;
+	const float w, z, y, v = 10.10101;
+	Prueba attrPrueba;
+
+	public Prueba funcionsita();
+	void funcionsota(QuePasion quehubo, Prueba pruebota);
+}
+
+class ComoEstas extends QuePasion {
+	char car;
+	protected int x11, y11;
+	public const char caracter, caracter2 = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public Prueba funcionsita(int var13);
+	private ComoEstas funcionsota(ComoEstas bien);
+}
+
+class Vacia {
+	
+}
+
+class TuMama {
+	public void compilar();
+}
+
+class TuPapa {
+	private TuMaMa miVieja;
+}
