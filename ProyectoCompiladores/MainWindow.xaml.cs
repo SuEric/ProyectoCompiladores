@@ -105,7 +105,7 @@ namespace ProyectoCompiladores
             // Errores
             String errores = analizador_semantico.errores;
             MessageBox.Show(nombreArchivo);
-            erroresListBox.Items.Add(errores);
+            erroresListBox.Items.Add(errores); // Se muestran los errores encontrados
         }
 
         private void openFileButton_Click(object sender, RoutedEventArgs e)

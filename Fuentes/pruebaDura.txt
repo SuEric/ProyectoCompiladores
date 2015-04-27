@@ -19,7 +19,7 @@ protected class ClaseA extends pruebaDura {
 class ClaseB extends ClaseA {
 	char car;
 	protected int a, y11;
-	public const char caracter, caracter2 = 10;
+	public const char caracter, caracter2 = car;
 	private const int w2, z1, y2, v13, q3 = y11;
 
 	public pruebaDura funcion (int var13);
@@ -42,7 +42,7 @@ class x
 {
 	char car;
 	protected int d2, y11;
-	public const char caracterx, caracter2x = 10;
+	public const char caracterx, caracter2x = car;
 	private const int w2, z1, y2, v13, q3 = y11;
 
 	public void fun (int var13);
@@ -52,7 +52,7 @@ class A
 {
 	char car;
 	protected int a, y1;
-	public const char caracterwdw, caracter2xw = 10;
+	public const char caracterwdw, caracter2xw = car;
 	private const int w2, z1, y2, v13, q3 = y11;
 
 	public char func (int var13);
@@ -62,7 +62,7 @@ class xz
 {
 	char car;
 	protected int a1, y11;
-	public const char caracterf, caracterr2 = 10;
+	public const char caracterf, caracterr2 = car;
 	private const int w2, z1, y2, v13, q3 = y11;
 
 	public pruebaDura f (int var13);
