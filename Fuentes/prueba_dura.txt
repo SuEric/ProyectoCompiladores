@@ -26,7 +26,7 @@ class ComoEstas extends QuePasion {
 	private ComoEstas funcionsota(ComoEstas bien);
 }
 
-class Vacia {
+private class Vacia {
 	
 }
 
@@ -34,6 +34,37 @@ class TuMama {
 	public void compilar();
 }
 
+
 class TuPapa {
 	private TuMaMa miVieja;
+}
+class x
+{
+	char car;
+	protected int x11, y11;
+	public const char caracter, caracter2 = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public Prueba funcionsita(int var13);
+	private ComoEstas funcionsota(ComoEstas bien);
+}
+class A
+{
+	char car;
+	protected int x11, y11;
+	public const char caracter, caracter2 = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public Prueba funcionsita(int var13);
+	private ComoEstas funcionsota(ComoEstas bien);
+}
+class xz
+{
+	char car;
+	protected int x11, y11;
+	public const char caracter, caracter2 = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public Prueba funcionsita(int var13);
+	private ComoEstas funcionsota(ComoEstas bien);
 }

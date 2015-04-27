@@ -29,7 +29,8 @@ namespace ProyectoCompiladores
     {
 
         String clasePrueba;
-        String rutaAchivo; 
+        String rutaAchivo;
+        String nombreArchivo;
         Analizador_lexico analizador_lexico;
         Analizador_Sintactico analizador_sintactico;
 
@@ -65,6 +66,7 @@ namespace ProyectoCompiladores
 
             // Pintar diagramas
             PaintClass paintClass = new PaintClass(canvasGrid, analizador_sintactico.Tabla);
+            paintClass.PintaClases();
         }
 
         private void compileButton_Click(object sender, RoutedEventArgs e)
@@ -73,11 +75,15 @@ namespace ProyectoCompiladores
 
             if (clasePrueba != null)
             {
+                // Creando Analizador Lexico
                 analizador_lexico = new Analizador_lexico(@"C:\Users\Legendary Dragon\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
-                analizador_lexico.cargarAutomata();
-                analizador_lexico.procesa(clasePrueba);
+                analizador_lexico.cargarAutomata(); // Cargando Automata
+                analizador_lexico.procesa(clasePrueba); // Evalua clasePrueba
+                
+                // Creando Analizador Sintactico
                 analizador_sintactico = new Analizador_Sintactico(analizador_lexico);
-
+                
+                // Creando un Hilo para Analizador Sintactico
                 Thread AS = new Thread(new ThreadStart(analizador_sintactico.ASintactico));
                 AS.Start();
 
@@ -93,10 +99,20 @@ namespace ProyectoCompiladores
             // Errores
             String[] errores = new String[10];
 
+            errores[1] = "Error 1 \n Error 2";
+            errores[2] = "Error 1";
+            errores[3] = "Error 1";
+            errores[4] = "Error 1";
+            errores[5] = "Error 1";
+            errores[6] = "Error 1";
+            errores[7] = "Error 1";
+            errores[8] = "Error 1";
+            errores[9] = "Error 1";
+
             // Mostrar todos errores
             for (int i = 0; i < errores.Length; i++)
             {
-                erroresListBox.Items.Add(errores[1]);
+                erroresListBox.Items.Add(errores[i]);
             }
         }
 
@@ -113,6 +129,7 @@ namespace ProyectoCompiladores
             if (openFileDialog.ShowDialog() == WinForms.DialogResult.OK)
             {
                 rutaAchivo = openFileDialog.FileName;
+                nombreArchivo = openFileDialog.FileNames[0];
                 // Objeto lectura de archivo
                 FileStream fileStream = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate);
 
@@ -130,7 +147,9 @@ namespace ProyectoCompiladores
 
         private void guardarButton_Click(object sender, RoutedEventArgs e)
         {
+            // Se crea un SaveFileDialog
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+
             // Configuración del chooser
             saveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
             saveFileDialog.Filter = "txt files (*.txt)|*.txt|cs files(*.cs)|*.cs";
@@ -139,13 +158,20 @@ namespace ProyectoCompiladores
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                rutaAchivo = saveFileDialog.FileName;
+                rutaAchivo = saveFileDialog.FileName; // Se guarda la ruta del Archivo
+                nombreArchivo = saveFileDialog.FileNames[0];
+
+                // Se crea un textRange y asignamos el Editor RichTextBox
                 TextRange textRange = new TextRange(editorRichTextBox.Document.ContentStart,
                                 editorRichTextBox.Document.ContentEnd);
+                
+                // Creamos FileStream para Salvar.
                 FileStream file = new FileStream(saveFileDialog.FileName, FileMode.Create);
-                textRange.Save(file, DataFormats.Text);
+                
+                textRange.Save(file, DataFormats.Text); // Guardamos el archivo al TextRange
+                
+                clasePrueba = textRange.Text; // Se Guarda la cadena a Analizar
 
-                clasePrueba = textRange.Text;
                 file.Close();
 
             }
