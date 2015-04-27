@@ -8,8 +8,8 @@ public class pruebaDura {
 
 protected class ClaseA extends pruebaDura {
 	protected int x, y;
-	public const float a, b, c, d, e = 0.6;
-	const float w, z, y, v = 10.10101;
+	public const float a,  e = 0.6;
+	const float w, v = 10.10101;
 	pruebaDura attrPrueba;
 
 	public float funcion ();
@@ -20,7 +20,7 @@ class ClaseB extends ClaseA {
 	char car;
 	protected int a, y11;
 	public const char caracter, caracter2 = car;
-	private const int w2, z1, y2, v13, q3 = y11;
+	private const int w2, v13, q3 = y11;
 
 	public pruebaDura funcion (int var13);
 	private ClaseB funcionsota(ClaseB bien);
@@ -37,13 +37,15 @@ class ClaseC {
 
 class ClaseD {
 	private ClaseC miVieja;
+	int numero;
 }
+
 class x
 {
 	char car;
 	protected int d2, y11;
 	public const char caracterx, caracter2x = car;
-	private const int w2, z1, y2, v13, q3 = y11;
+	private const int w2, v13, q3 = y11;
 
 	public void fun (int var13);
 	private float function (int bien);
@@ -53,7 +55,7 @@ class A
 	char car;
 	protected int a, y1;
 	public const char caracterwdw, caracter2xw = car;
-	private const int w2, z1, y2, v13, q3 = y1;
+	private const int w2, v13, q3 = y1;
 
 	public char func (int var13);
 	private char funcion  (char bien);
@@ -62,8 +64,7 @@ class xz
 {
 	char car;
 	protected int a1, y11;
-	public const char caracterf, caracterr2 = car;
-	private const int w2, z1, y2, v13, q3 = y11;
+	public const char car, q3 = y11;
 
 	public pruebaDura f (int var13);
 	private ClaseB f2 (ClaseB bien);

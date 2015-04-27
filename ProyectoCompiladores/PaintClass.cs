@@ -73,15 +73,6 @@ namespace ProyectoCompiladores
 
         public void PintaClases()
         {
-            // Labels de info de Clase, Atributos y Métodos
-            Label nombreClaseLabel = new Label();
-            Label atributosLabel = new Label();
-            Label metodosLabel = new Label();
-
-            // Línea de unión de las clases
-            Line line = new Line();
-            SolidColorBrush redBrush = new SolidColorBrush();
-
             String texto = ""; // Texto para asignarse a todos los Label
             String mod = "Error, no hay Mod"; // Este Mod cambiará en el foreach, debe inicializarse forzosamente
             string extends = ""; // Captura de "extends" si es que extiende
@@ -96,25 +87,39 @@ namespace ProyectoCompiladores
                 // Obtenemos Número de Atributos y Número de Métodos
                 int numAtributos = clase.Variables.Count();
                 int numMetodos = clase.Metodos.Count();
-                
+
+                // Labels de info de Clase, Atributos y Métodos
+                Label nombreClaseLabel = new Label();
+                Label atributosLabel = new Label();
+                Label metodosLabel = new Label();
+
+                // Línea de unión de las clases
+                Line line = new Line();
+                SolidColorBrush redBrush = new SolidColorBrush();
+
                 // Creamos un Grid para Seccionar Nombre de Clase, Atributos, Métodos
                 Grid claseGrid = new Grid();
 
                 // Fila y configuracion de Tamaño para el Nombre de la clase 
                 RowDefinition rowClase = new RowDefinition();
-                rowClase.Height = new GridLength(25, GridUnitType.Star);
+                rowClase.Height = new GridLength(10, GridUnitType.Star);
+
                 // Fila y Configuración para los Atributos de la Clase
                 RowDefinition rowAtributos = new RowDefinition();
-                rowAtributos.Height = new GridLength(numAtributos * 15, GridUnitType.Star);
+                rowAtributos.Height = new GridLength(numAtributos * 6, GridUnitType.Star);
+
+                int restante = 180 - numAtributos * 6 - numMetodos * 6;
+
                 // Fila y Configuración para los Métodos de la Clase
                 RowDefinition rowMetodos = new RowDefinition();
-                rowMetodos.Height = new GridLength(numMetodos * 15, GridUnitType.Star);
+                rowMetodos.Height = new GridLength(numMetodos * 6, GridUnitType.Star);
 
                 // Agregando las Filas al Grid de la Clase
                 claseGrid.RowDefinitions.Add(rowClase);
                 claseGrid.RowDefinitions.Add(rowAtributos);
                 claseGrid.RowDefinitions.Add(rowMetodos);
 
+                mod = "";
                 // Asignar +, -, & Dependiendo el Modificador
                 switch (clase.Mod)
                 {
@@ -130,21 +135,25 @@ namespace ProyectoCompiladores
                 }
 
                 // Si extiende, agrega "extends"
+                extends = "";
                 if (clase.Extend != "") extends = "extends";
 
                 // Asignado al Label de toda la infor de la Clase
-                nombreClaseLabel.Content = mod + " " + clase.Id + " " + extends + clase.Extend;
+                nombreClaseLabel.Content = mod + " " + clase.Id + " " + extends + " " + clase.Extend;
 
+                texto = "";
                 contador = 0;
                 foreach (Variable variable in clase.Variables)
                 {
                     // Si hay constante, agrega "const"
+                    constante = "";
+                    igual = "";
                     if (variable.IsConst) { constante = "const"; igual = " = "; }
 
                     // Guardado del texto de info de la Variable
-                    texto = texto + variable.Mod + " " + constante + " " + variable.Tipo + " " + variable.Id + igual + variable.Valor + ";";
+                    texto += variable.Mod + " " + constante + " " + variable.Tipo + " " + variable.Id + igual + variable.Valor + ";";
 
-                    if (contador < numAtributos) texto = texto + "\n"; // El último no agrega salto de línea
+                    if (contador < numAtributos-1) texto += "\n"; // El último no agrega salto de línea
                     contador++;
                 }
 
@@ -155,9 +164,9 @@ namespace ProyectoCompiladores
                 foreach (Metodo metodo in clase.Metodos)
                 {
                     // Guardado del texto de info del Método
-                    texto = metodo.Mod + " " + metodo.Id + "(" + ")" + ";";
+                    texto += metodo.Mod + " " + metodo.Id + "(" + ")" + ";";
 
-                    if (contador < numAtributos) texto = texto + "\n"; // El último no agrega salto de línea
+                    if (contador < numMetodos-1) texto += "\n"; // El último no agrega salto de línea
                     contador++;
                 }
 
@@ -172,6 +181,7 @@ namespace ProyectoCompiladores
                 claseGrid.Children.Add(nombreClaseLabel);
                 claseGrid.Children.Add(atributosLabel);
                 claseGrid.Children.Add(metodosLabel);
+
 
                 int row = contadorClases / numeroColumnas; // Obtenemos fila, va incrementando al llegar al tope
 
@@ -206,7 +216,7 @@ namespace ProyectoCompiladores
 
                 // Por último se agrega la claseGrid y linea
                 canvasGrid.Children.Add(claseGrid);
-                canvasGrid.Children.Add(line);
+                //canvasGrid.Children.Add(line);
 
                 contadorClases++; // Aumentar contador de clases
             }
