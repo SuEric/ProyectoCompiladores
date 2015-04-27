@@ -279,7 +279,7 @@ namespace ProyectoCompiladores
                             }
                             if(tipo)                                        //Termino el recorrido y no encontró el Id propio del valor
                             {
-                                errores += "El valor que se quiere asignar :" + var.Tipo_valor + " a la variable "+var.Id+" no existe\n";
+                                errores += "El valor que se quiere asignar :" + var.Valor + " a la variable "+var.Id+" no existe\n";
                                 return tipo;                                    //en caso de ser valor tipo Id y no ser igual a ninguna variable
                             }
                         }
