@@ -40,7 +40,6 @@ namespace ProyectoCompiladores
         public MainWindow()
         {
             InitializeComponent();
-
             editorRichTextBox.Document.PageWidth = 1000; // Sin esto no hay Scrolling horizontal
         }
 
@@ -67,13 +66,17 @@ namespace ProyectoCompiladores
             ventanasTabControl.SelectedItem = diagramTabItem;
             diagramTabItem.IsSelected = true;
 
-            // Pintar diagramas
-            PaintClass paintClass = new PaintClass(canvasGrid, analizador_sintactico.Tabla);
-            paintClass.PintaClases();
+            if (analizador_sintactico != null)
+            {
+                // Pintar diagramas
+                PaintClass paintClass = new PaintClass(canvasGrid, analizador_sintactico.Tabla);
+                paintClass.PintaClases();
+            }
         }
 
         private void compileButton_Click(object sender, RoutedEventArgs e)
         {
+
             // Se lee el texto del editorRichTextBox
             textRange = new TextRange(editorRichTextBox.Document.ContentStart, editorRichTextBox.Document.ContentEnd);
 
@@ -84,35 +87,37 @@ namespace ProyectoCompiladores
                 if (rutaAchivo != null)
                 {
                     clasePrueba = textRange.Text;
-
                     // Creando Analizador Lexico
-                    analizador_lexico = new Analizador_lexico(@"C:\Users\sueric16\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
+                    analizador_lexico = new Analizador_lexico(@"C:\Users\Miguel\Documents\ProyectoCompiladores\Fuentes\automata_1.txt");
                     analizador_lexico.cargarAutomata(); // Cargando Automata
-                    analizador_lexico.procesa(clasePrueba); // Evalua clasePrueba
-
-                    // Creando Analizador Sintactico
-                    analizador_sintactico = new Analizador_Sintactico(analizador_lexico);
-
-                    // Creando un Hilo para Analizador Sintactico
-                    Thread AS = new Thread(new ThreadStart(analizador_sintactico.ASintactico));
-                    AS.Start();
-                    AS.Join();
-
-                    // Creando analizador semántico
-                    analizador_semantico = new Analizador_Semantico(analizador_sintactico);
-
-                    // Split por . y \ 
-                    string[] rutas = rutaAchivo.Split(new Char[] { '.' });
-                    string[] rutas2 = rutas[0].Split(new Char[] { '\\' });
-
-                    nombreArchivo = rutas2[(rutas2.Count() - 1)]; // Se captura el nombre del archivo
-
-                    analizador_semantico.analiza(nombreArchivo); // Analiza el archivo, necesita saber el nombre del archivo
-
-                    String errores = analizador_semantico.errores; // Se capturan los errores del semántico
-
-                    erroresListBox.Items.Clear(); // Se limpia el ListBox
-                    erroresListBox.Items.Add(errores); // Se muestran los errores encontrados
+                    if (!analizador_lexico.procesa(clasePrueba)) // Evalua clasePrueba
+                    {
+                        // Creando Analizador Sintactico
+                        analizador_sintactico = new Analizador_Sintactico(analizador_lexico);
+                        // Creando un Hilo para Analizador Sintactico
+                        Thread AS = new Thread(new ThreadStart(analizador_sintactico.ASintactico));
+                        AS.Start();
+                        AS.Join();
+                        if (analizador_sintactico.Errores.Equals(""))
+                        {
+                            // Creando analizador semántico
+                            analizador_semantico = new Analizador_Semantico(analizador_sintactico);
+                            analizador_semantico.analiza(nombreArchivo); // Analiza el archivo, necesita saber el nombre del archivo
+                            String errores = analizador_semantico.errores; // Se capturan los errores del semántico
+                            erroresListBox.Items.Clear(); // Se limpia el ListBox
+                            erroresListBox.Items.Add(errores); // Se muestran los errores encontrados
+                        }
+                        else
+                        {
+                            erroresListBox.Items.Clear();
+                            erroresListBox.Items.Add(analizador_sintactico.Errores);
+                        }
+                    }
+                    else
+                    {
+                        erroresListBox.Items.Clear();
+                        erroresListBox.Items.Add(analizador_lexico.errores);
+                    }
                 }
                 else
                 {
@@ -150,6 +155,12 @@ namespace ProyectoCompiladores
 
                 fileStream.Close(); // Cierre del archivo
             }
+            // Split por . y \ 
+            string[] rutas = rutaAchivo.Split(new Char[] { '.' });
+            string[] rutas2 = rutas[0].Split(new Char[] { '\\' });
+
+            nombreArchivo = rutas2[(rutas2.Count() - 1)]; // Se captura el nombre del archivo
+
         }
 
         private void guardarButton_Click(object sender, RoutedEventArgs e)

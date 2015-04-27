@@ -17,9 +17,10 @@ namespace ProyectoCompiladores
         Variable nueva_variable;            //Guarda la lista de variables de una clase
         Metodo nuevo_metodo;                //Guarda la lista de metodos de una clase
         TablaSimbolos tabla;                //Contiene la lista de clases del archivo
-        static Boolean errores;             //Indica la existencia de errores en caso de ser true
+        static Boolean error;             //Indica la existencia de errores en caso de ser true
         List<string> vars;                  //lista las variables que encuentra en declaracion de const
         string aux_mod , aux_tipo;
+        string errores;
 
         public TablaSimbolos Tabla
         {
@@ -27,11 +28,15 @@ namespace ProyectoCompiladores
             //set { clases = value; }
         }
 
+        public string Errores
+        {
+            get { return errores; }
+        }
         // Constructor inicializado con el Analizador Léxico y primer Token
         public Analizador_Sintactico(Analizador_lexico analizador_lexico)
         {
             tabla = new TablaSimbolos();
-            errores = false;
+            error = false;
             nueva_clase = new Clase_valores();
             nueva_variable = new Variable();
             nuevo_metodo = new Metodo();
@@ -43,6 +48,7 @@ namespace ProyectoCompiladores
         // Funcion Inicial
         public void ASintactico()
         {
+            errores = "";
             //Simbolo inicial
             Clase();
         }
@@ -71,7 +77,7 @@ namespace ProyectoCompiladores
                 Consumir("$",0);                                                        //Llega al final
                 MessageBox.Show("El analizador sintactico terminó su ejecución");
             }
-            return errores;
+            return error;
         }
         //Consume el extend y asigna el valor a la clase
         
@@ -87,8 +93,8 @@ namespace ProyectoCompiladores
             }
             if (!(token[1].Equals("{")))
             {
-                errores = true;
-                MessageBox.Show("Error: Se esperaba alguno de 'extends'");
+                error = true;
+                errores += "Error: Se esperaba 'extends'\n";
                 // ES LAMBDA, no hacer nada
                 return false;
             }
@@ -114,7 +120,7 @@ namespace ProyectoCompiladores
                 // =  { '}' }
                 if (!token[1].Equals("}"))      //Pregunta por el predict de la produccion de lambda 
                 {
-                    MessageBox.Show("Error: Se esperaba alguno de 'public', 'protected', 'private', 'int', 'float', 'char', 'const', 'void'"); //No encontro ningun token esperado
+                    errores +="Error: Se esperaba alguno de 'public', 'protected', 'private', 'int', 'float', 'char', 'const', 'void'\n"; //No encontro ningun token esperado
                 }
             }
         }
@@ -134,8 +140,8 @@ namespace ProyectoCompiladores
                         // =  { class, int, float, char, const, void, Id } }
                         if (!(token[1].Equals("class") || token[1].Equals("int") || token[1].Equals("float") || token[1].Equals("char") || token[1].Equals("const") || token[1].Equals("void") || token[0].Equals("Id")))
                         {
-                            errores = true;
-                            MessageBox.Show("Error: Se esperaba alguno de 'public', 'private', 'protected'");
+                            error = true;
+                            errores += "Error: Se esperaba alguno de 'public', 'private', 'protected'\n";
                             // ES LAMBDA, no hacer nada
                             return false;
                         }       
@@ -161,8 +167,8 @@ namespace ProyectoCompiladores
                 }
                 else
                 {
-                    errores = true;                                                                 //Marca la varible de errores detectados
-                    MessageBox.Show("Error: Se esperaba alguno de 'int', 'float', 'char', 'Id'");   //Mensaje de error
+                    error = true;                                                                 //Marca la varible de errores detectados
+                    errores +="Error: Se esperaba alguno de 'int', 'float', 'char', 'Id'\n";   //Mensaje de error
                     Thread.CurrentThread.Abort();                                                   //Termina la ejecución del hilo
                 }
             }
@@ -180,8 +186,8 @@ namespace ProyectoCompiladores
             }
             else 
             {
-                errores = true;
-                MessageBox.Show("Error: Se esperaba alguno de 'int', 'float', 'char'"); //Mensaje de tokens esperados
+                error = true;
+                errores += "Error: Se esperaba alguno de 'int', 'float', 'char'\n"; //Mensaje de tokens esperados
                 Thread.CurrentThread.Abort();
                 return false;
             }
@@ -238,8 +244,8 @@ namespace ProyectoCompiladores
                     }
                     else
                     {
-                        errores = true;                         //Marca de error
-                        MessageBox.Show("Error: Se esperaba alguno de 'int', 'float', 'char', 'const', 'void'");//Mensaje con los tokens esperados
+                        error = true;                         //Marca de error
+                        errores += "Error: Se esperaba alguno de 'int', 'float', 'char', 'const', 'void'\n";//Mensaje con los tokens esperados
                         Thread.CurrentThread.Abort();           //Termina la ejecucion del analizador sintactico por error
                         return false;
                     }
@@ -280,8 +286,8 @@ namespace ProyectoCompiladores
                 }
                 else
                 {
-                    errores = true;
-                    MessageBox.Show("Error: Se esperaba alguno de ';' | ',' | '('"); //Mensaje de error de token esperados
+                    error = true;
+                    errores += "Error: Se esperaba alguno de ';' | ',' | '('\n"; //Mensaje de error de token esperados
                     Thread.CurrentThread.Abort();                                   //Interrumpe el Analizador Sintactico
                     return false;
                 }
@@ -309,8 +315,8 @@ namespace ProyectoCompiladores
                 // =  { ; }
                 if (!token[1].Equals(";"))
                 {
-                    errores = true;
-                    MessageBox.Show("Error: Se esperaba alguno de ','"); //Mensaje de token esperado
+                    error = true;
+                    errores += "Error: Se esperaba alguno de ','\n"; //Mensaje de token esperado
                     return false;
                 }
             }
@@ -340,8 +346,8 @@ namespace ProyectoCompiladores
                 // =  { = }
                 if(!token[1].Equals("=")) 
                 {
-                    errores = true;
-                    MessageBox.Show("Error: Se esperaba alguno de ','"); //Mensaje de tocken esperado
+                    error = true;
+                    errores += "Error: Se esperaba alguno de ','\n"; //Mensaje de tocken esperado
                     return false;
                 }
             }
@@ -379,8 +385,8 @@ namespace ProyectoCompiladores
             }
             else
             {
-                errores = true;
-                MessageBox.Show("Error: Se esperaba alguno de 'Id', 'NumEntero', 'RealSigno', 'NumEnteroSigno'"); //Mensaje de tokens esperados
+                error = true;
+                errores += "Error: Se esperaba alguno de 'Id', 'NumEntero', 'RealSigno', 'NumEnteroSigno'\n"; //Mensaje de tokens esperados
                 return false;
             }
         }
@@ -403,8 +409,8 @@ namespace ProyectoCompiladores
                 }
                 if (!(token[1].Equals("int") || token[1].Equals("char") || token[1].Equals("float") || token[0].Equals("Id") || token[1].Equals("}") || token[1].Equals("void")))
                 {
-                    errores = true;
-                    MessageBox.Show("Error: Se esperaba alguno de:  public , protected , private, void, int, char, float,id");
+                    error = true;
+                    errores += "Error: Se esperaba alguno de:  public , protected , private, void, int, char, float,id\n";
                     return false;
                 }
             }
@@ -434,8 +440,8 @@ namespace ProyectoCompiladores
                 {
                     if (!token[1].Equals("}"))
                     {
-                        errores = true;                 //Marca error
-                        MessageBox.Show("Error: Se esperaban alguno de 'int', 'float', 'char', 'void'"); //Mensaje con los tokens esperados
+                        error = true;                 //Marca error
+                        errores+= "Error: Se esperaban alguno de 'int', 'float', 'char', 'void'\n"; //Mensaje con los tokens esperados
                         return false;
                     }
                 }
@@ -468,8 +474,8 @@ namespace ProyectoCompiladores
                 // =  { ) }
                 if (!token[1].Equals(")")) 
                 {
-                    errores = true;
-                    MessageBox.Show("Error: Se esperaba alguno de 'int', 'float', 'char', Id"); //Mensaje de tokens esperados
+                    error = true;
+                    errores += "Error: Se esperaba alguno de 'int', 'float', 'char', Id\n"; //Mensaje de tokens esperados
                     return false;
                 }
             }
@@ -489,8 +495,8 @@ namespace ProyectoCompiladores
                 // =  { ) }
                 if (!token[1].Equals(")")) 
                 {
-                    errores = true;
-                    MessageBox.Show("Error: Se esperaba alguno de ','");//Mensaje de tokens esperados
+                    error = true;
+                    errores += "Error: Se esperaba alguno de ','\n";//Mensaje de tokens esperados
                     return false;
                 }
             }
@@ -508,8 +514,8 @@ namespace ProyectoCompiladores
                 token = aux.Split(null);
                 return true; // Regresar verdadero, consumo correcto
             }
-            errores = true;
-            MessageBox.Show("Error se esperaba '" + a +"'");
+            error = true;
+            errores += "Error se esperaba '" + a +"'\n";
             Thread.CurrentThread.Abort();
 
             // El token a consumir no es el correcto

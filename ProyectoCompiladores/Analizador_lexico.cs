@@ -9,7 +9,6 @@ namespace ProyectoCompiladores
 {
     public class Analizador_lexico
     {
-        string TextPrueba;
         int[,] tabla_transiciones; // tabla de estados
         string[] lexema; // Lexema
         string archivo; // Archivo a analizar
@@ -17,20 +16,19 @@ namespace ProyectoCompiladores
         int filas; // Número de filas
         Dictionary<char, int> simbolos; // Alfabeto
         List<string> palabras_reservadas; // Palabras reservadas
-        public static int count;
         List<string> tokens; // Tokens encontrados
-        static bool errores;
+        public string errores;
+        int count;
+        bool error;
         public Analizador_lexico (string archivo)
         {
+            errores = "";
             this.archivo = archivo;
             columnas = 0;
             filas = 0;
-            count = 0;
-            // Cambiar palabras reservadas, hacerlo desde archivo
-            palabras_reservadas = new List<string> {"if", "begin", "for", "while","end"};
-
             // Lista tokens vacía
             tokens = new List<string>();
+            palabras_reservadas = new List<string>();
         }
 
         public void showReservedWords()
@@ -39,9 +37,7 @@ namespace ProyectoCompiladores
             {
                 MessageBox.Show(palabra);
             }
-            
         }
-        public int Count { get; set; }
         public string is_reservedId(string valor)
         {
             foreach(string reserved in palabras_reservadas)
@@ -53,26 +49,9 @@ namespace ProyectoCompiladores
             }
             return "Id";
         }
-        public int getReservedWordsLength() {
-            return palabras_reservadas.ToArray().Length;
-        }
-
-        public string getReservedWord(int index) {
-            return palabras_reservadas[index];
-        }
-
         public void addToken(string token) {
             tokens.Add(token);
         }
-
-        public void clearTokens() {
-            tokens.Clear();
-        }
-
-        public List<string> getFoundTokens() {
-            return tokens;
-        }
-
         public void countStatesInFile() //cuenta el numero de estados
         {
             StreamReader file = new StreamReader(@archivo); //Abre un stream para lectura del archivo
@@ -215,7 +194,7 @@ namespace ProyectoCompiladores
 
         public string sigToken()
         {
-            if (count < tokens.ToArray().Length)
+            if (count < tokens.Count)
             {
                 return tokens[count++];
             }
@@ -225,8 +204,10 @@ namespace ProyectoCompiladores
                 return "$";
             }
         }
-        public void procesa(String TextPrueba)
+        public bool procesa(String TextPrueba)
         {
+            error = false;
+            count = 0;
             string textTest = TextPrueba + " "; //Se agrega un espacio al final del archivo a leer para que finalice las lecturas
             int state = 0;                           //Se asigna estado inicial 0
             string valor = "";                      //Va almacenando los caracteres del lexema, se guaradara en una lista al final junto con su tipo
@@ -234,7 +215,7 @@ namespace ProyectoCompiladores
             for (int i = 0; i < textTest.Length; i++)//Se lee caracter a caracter el texto a revisar
             {
                 char c = textTest[i];    //Extrae caracter   
-                int ascii = c;          //Guarda el valor ascii del rocken encontrado
+                int ascii = c;          //Guarda el valor ascii del tocken encontrado
 
                 if ((ascii == 32 || ascii == 13 || ascii == 9 || ascii == 10) && state == 0)
                 {
@@ -244,18 +225,20 @@ namespace ProyectoCompiladores
                 state = getState(state, c); //Se mueve al siguiente estado de acuerdo con el caracter leido
                 if (state == -999)
                 {
-                    errores = true;
+                    errores += "Token no reconocido: '" + valor + "''\n";   //Error de tocken no reconocido
                     state = 0;
-                    MessageBox.Show("Token no reconocido: '"+valor+"'");     //Error de tocken no reconocido
+                    error = true;
+                    valor = "";
                     continue;
                 }
                               //En caso de ser un tocken compuesto de mas de un caracter almacena el siguiente caracter
                 if (state == -1)
                 {
-                    errores = true;
+                    errores += "error lexico en " + valor+"\n";
                     state = 0;
-                    MessageBox.Show("error lexico en " + valor);
-                    break;
+                    error = true;
+                    valor = "";
+                    continue;
                 }
                 if (isFinalState(state))   //Pregunta si el estado actual ya es un estado final para proceder a almacenarlo
                 {
@@ -267,17 +250,17 @@ namespace ProyectoCompiladores
 
                     if (getLexema(state).Equals("Id")) //Censa si el estado es de un Id
                     {
-                        addToken(is_reservedId(valor) + " " + valor); //Agrega el lexema separado por su valor,si es una palabra reservada ella misma será el lexema
+                        addToken(is_reservedId(valor) + " " + valor); //Agrega el lexema separado por su valor,si es una palabra reservada palabra reservada sera el lexema
                     }
                     else
                     {
                         addToken(getLexema(state) + " " + valor);                     //Agrega el lexema separado por su valor
                     }
-                   // MessageBox.Show("Lexema: " + getLexema(state) + "\nValor: " + valor + " " + is_reservedId(valor)); //Muestra el lexema y su valor
                     valor = "";                                                             //Se limpia la variable valor para empezar a guardar una nueva cadena
                     state = 0;                                                              //El estado se vuelve el inicial
                 }
             }
+            return error;
         }
     }
 }

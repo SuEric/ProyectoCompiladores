@@ -41,7 +41,12 @@ namespace ProyectoCompiladores
             }
             
         }
-        public int Count { get; set; }
+
+        public int Count
+        {
+            get { return count; }
+            set { count = value; }
+        }
         public string is_reservedId(string valor)
         {
             foreach(string reserved in palabras_reservadas)

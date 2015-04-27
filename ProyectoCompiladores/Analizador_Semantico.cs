@@ -63,6 +63,7 @@ namespace ProyectoCompiladores
                     else
                     {
                         errores += "La clase principal :" + clase.Id + " debe ser Public\n";
+                        return true;
                     }
                 }
                 else
@@ -123,20 +124,23 @@ namespace ProyectoCompiladores
                     {
                         if (metod.Id.Equals(clase.Metodos[i].Id))   //Encuentra sobrecarga de metodos
                         {
-                            if(metod.TiposFirma.Count == clase.Metodos[i].TiposFirma.Count) //misma cantidad de parametros
+                            if (metod.Tipo.Equals(clase.Metodos[i].Tipo))   //Mismo valor de retorno
                             {
-                                bool igual = true;
-                                for(int j=0; j<metod.TiposFirma.Count;j++)
+                                if (metod.TiposFirma.Count == clase.Metodos[i].TiposFirma.Count) //misma cantidad de parametros
                                 {
-                                    if(!metod.TiposFirma[j].Equals(clase.Metodos[i].TiposFirma[j]))
+                                    bool igual = true;
+                                    for (int j = 0; j < metod.TiposFirma.Count; j++)
                                     {
-                                        igual = false;
+                                        if (!metod.TiposFirma[j].Equals(clase.Metodos[i].TiposFirma[j]))
+                                        {
+                                            igual = false;
+                                        }
                                     }
-                                }
-                                if(igual)                               //si encontro una firma duplicada
-                                {
-                                    errores += "La firma :" + metod.Id + " esta duplicada\n";
-                                    return true;
+                                    if (igual)                               //si encontro una firma duplicada
+                                    {
+                                        errores += "La firma :" + metod.Id + " esta duplicada\n";
+                                        return true;
+                                    }
                                 }
                             }
                         }
