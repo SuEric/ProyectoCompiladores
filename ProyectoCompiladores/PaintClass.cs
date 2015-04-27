@@ -78,6 +78,10 @@ namespace ProyectoCompiladores
             Label atributosLabel = new Label();
             Label metodosLabel = new Label();
 
+            // Línea de unión de las clases
+            Line line = new Line();
+            SolidColorBrush redBrush = new SolidColorBrush();
+
             String texto = ""; // Texto para asignarse a todos los Label
             String mod = "Error, no hay Mod"; // Este Mod cambiará en el foreach, debe inicializarse forzosamente
             string extends = ""; // Captura de "extends" si es que extiende
@@ -169,8 +173,7 @@ namespace ProyectoCompiladores
                 claseGrid.Children.Add(atributosLabel);
                 claseGrid.Children.Add(metodosLabel);
 
-
-                int row = contadorClases / numeroColumnas; // Obtenemos fila
+                int row = contadorClases / numeroColumnas; // Obtenemos fila, va incrementando al llegar al tope
 
                 if (contadorClases == 0) {
                     columna = 0;
@@ -179,29 +182,32 @@ namespace ProyectoCompiladores
                     columna += 2;
                 }
 
+                // Resetea columnas cuando ya no hay espacio en la fila
                 if (contadorClases % numeroColumnas == 0 && contadorClases > (numeroColumnas-1) ) columna = 0;
 
-                Line line = new Line();
+                // Asignado de X's y Y's para la línea, tamaño de 100
                 line.X1 = 0;
                 line.Y1 = 100;
                 line.X2 = 100;
                 line.Y2 = 100;
 
-                // Create a red Brush
-                SolidColorBrush redBrush = new SolidColorBrush();
+                // RedBrush rojo
                 redBrush.Color = Colors.Red;
 
-                // Set Line's width and color
+                // Especifica grosor y color de línea
                 line.StrokeThickness = 5;
                 line.Stroke = redBrush;
 
-                // Add line to the Grid.
-                
+                // Posicionamiento de la claseGrid, en qué sección del Grid padre irá
                 posicionarElemento(claseGrid, row, columna);
-                posicionarElemento(line, row, columna+1);
-                canvasGrid.Children.Add(claseGrid);
 
+                // Posicionamiento de la línea, en qué sección del Grid padre irá
+                posicionarElemento(line, row, columna+1);
+
+                // Por último se agrega la claseGrid y linea
+                canvasGrid.Children.Add(claseGrid);
                 canvasGrid.Children.Add(line);
+
                 contadorClases++; // Aumentar contador de clases
             }
         }

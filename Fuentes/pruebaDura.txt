@@ -53,7 +53,7 @@ class A
 	char car;
 	protected int a, y1;
 	public const char caracterwdw, caracter2xw = car;
-	private const int w2, z1, y2, v13, q3 = y11;
+	private const int w2, z1, y2, v13, q3 = y1;
 
 	public char func (int var13);
 	private char funcion  (char bien);

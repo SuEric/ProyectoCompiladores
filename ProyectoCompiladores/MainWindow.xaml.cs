@@ -31,9 +31,12 @@ namespace ProyectoCompiladores
         String clasePrueba;
         String rutaAchivo;
         String nombreArchivo;
+        TextRange textRange;
+
         Analizador_lexico analizador_lexico;
         Analizador_Sintactico analizador_sintactico;
         Analizador_Semantico analizador_semantico;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -71,43 +74,55 @@ namespace ProyectoCompiladores
 
         private void compileButton_Click(object sender, RoutedEventArgs e)
         {
-            // Acá se hará todos los procesos de analisis
+            // Se lee el texto del editorRichTextBox
+            textRange = new TextRange(editorRichTextBox.Document.ContentStart, editorRichTextBox.Document.ContentEnd);
 
-            if (clasePrueba != null)
+            // Entra si hay texto
+            if (textRange.Text != null)
             {
-                // Creando Analizador Lexico
-                analizador_lexico = new Analizador_lexico(@"C:\Users\Miguel\Documents\ProyectoCompiladores\Fuentes\automata_1.txt");
-                analizador_lexico.cargarAutomata(); // Cargando Automata
-                analizador_lexico.procesa(clasePrueba); // Evalua clasePrueba
-                
-                // Creando Analizador Sintactico
-                analizador_sintactico = new Analizador_Sintactico(analizador_lexico);
-                
-                // Creando un Hilo para Analizador Sintactico
-                Thread AS = new Thread(new ThreadStart(analizador_sintactico.ASintactico));
-                AS.Start();
-                AS.Join();
-                analizador_semantico = new Analizador_Semantico(analizador_sintactico);
+                // Entra si hay ruta de archivo
+                if (rutaAchivo != null)
+                {
+                    clasePrueba = textRange.Text;
 
-                // Obtenemos el nombre del archivo
-                string[] rutas = rutaAchivo.Split(new Char[] { '.' });
-                string[] rutas2 = rutas[0].Split(new Char[] { '\\' });
+                    // Creando Analizador Lexico
+                    analizador_lexico = new Analizador_lexico(@"C:\Users\sueric16\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
+                    analizador_lexico.cargarAutomata(); // Cargando Automata
+                    analizador_lexico.procesa(clasePrueba); // Evalua clasePrueba
 
-                nombreArchivo = rutas2[(rutas2.Count() - 1)];
+                    // Creando Analizador Sintactico
+                    analizador_sintactico = new Analizador_Sintactico(analizador_lexico);
 
-                analizador_semantico.analiza(nombreArchivo);
+                    // Creando un Hilo para Analizador Sintactico
+                    Thread AS = new Thread(new ThreadStart(analizador_sintactico.ASintactico));
+                    AS.Start();
+                    AS.Join();
+
+                    // Creando analizador semántico
+                    analizador_semantico = new Analizador_Semantico(analizador_sintactico);
+
+                    // Split por . y \ 
+                    string[] rutas = rutaAchivo.Split(new Char[] { '.' });
+                    string[] rutas2 = rutas[0].Split(new Char[] { '\\' });
+
+                    nombreArchivo = rutas2[(rutas2.Count() - 1)]; // Se captura el nombre del archivo
+
+                    analizador_semantico.analiza(nombreArchivo); // Analiza el archivo, necesita saber el nombre del archivo
+
+                    String errores = analizador_semantico.errores; // Se capturan los errores del semántico
+
+                    erroresListBox.Items.Clear(); // Se limpia el ListBox
+                    erroresListBox.Items.Add(errores); // Se muestran los errores encontrados
+                }
+                else
+                {
+                    MessageBox.Show("Tienes que guardar el archivo antes de compilar");
+                }
             }
             else
             {
                 MessageBox.Show("Debe escribir código o abrir un archivo primero");
             }
-
-            // Errores
-            String errores = analizador_semantico.errores;
-            MessageBox.Show(nombreArchivo);
-
-            erroresListBox.Items.Clear();
-            erroresListBox.Items.Add(errores); // Se muestran los errores encontrados
         }
 
         private void openFileButton_Click(object sender, RoutedEventArgs e)
@@ -128,16 +143,14 @@ namespace ProyectoCompiladores
                 FileStream fileStream = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate);
 
                 // Objeto textRange y editorRichTextBox destino
-                TextRange textRange = new TextRange(editorRichTextBox.Document.ContentStart, editorRichTextBox.Document.ContentEnd);
+                textRange = new TextRange(editorRichTextBox.Document.ContentStart, editorRichTextBox.Document.ContentEnd);
 
                 // Carga el archivo al textRange, por ende ya se asignó al editorRichTextBox
                 textRange.Load(fileStream, DataFormats.Text);
-                clasePrueba = textRange.Text;
 
                 fileStream.Close(); // Cierre del archivo
             }
         }
-        // Botón que nos permite guardar cambios.
 
         private void guardarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -153,26 +166,17 @@ namespace ProyectoCompiladores
             if (saveFileDialog.ShowDialog() == true)
             {
                 rutaAchivo = saveFileDialog.FileName; // Se guarda la ruta del Archivo
-                nombreArchivo = saveFileDialog.FileNames[0];
 
                 // Se crea un textRange y asignamos el Editor RichTextBox
-                TextRange textRange = new TextRange(editorRichTextBox.Document.ContentStart,
-                                editorRichTextBox.Document.ContentEnd);
+                textRange = new TextRange(editorRichTextBox.Document.ContentStart, editorRichTextBox.Document.ContentEnd);
                 
                 // Creamos FileStream para Salvar.
                 FileStream file = new FileStream(saveFileDialog.FileName, FileMode.Create);
                 
                 textRange.Save(file, DataFormats.Text); // Guardamos el archivo al TextRange
-                
-                clasePrueba = textRange.Text; // Se Guarda la cadena a Analizar
 
                 file.Close();
-
             }
-
-        
-         
-
         }
     }
 }
