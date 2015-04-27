@@ -75,6 +75,16 @@ namespace ProyectoCompiladores
             get { return tipo; }
             set { tipo = value; }
         }
+
+        public bool IsConst
+        {
+            get { return is_const; }
+        }
+
+        public string Valor
+        {
+            get { return valor; }
+        }
         public void asigna_const(string _valor)
         {
             is_const = true;
