@@ -185,11 +185,11 @@ namespace ProyectoCompiladores
                 foreach (Metodo metod in clase.Metodos)         //Recorre los metodos de todas las clases
                 {
                     int count = 0;
-                    foreach(string s in metod.idTipos_firma)    //Recorre todas los id's de las firmas
+                    foreach(string s in metod.IdTipos_firma)    //Recorre todas los id's de las firmas
                     {
-                        for (int i = count + 1; i < metod.idTipos_firma.Count; i++) //Recorre los id's restantes
+                        for (int i = count + 1; i < metod.IdTipos_firma.Count; i++) //Recorre los id's restantes
                         {
-                            if (s.Equals(metod.idTipos_firma[i]))                   //Localiza si existen ids duplicados
+                            if (s.Equals(metod.IdTipos_firma[i]))                   //Localiza si existen ids duplicados
                                     {
                                         errores += "La firma :" + metod.Id + " tiene el sig id: "+s+" duplicado\n";
                                         return true;
@@ -261,7 +261,7 @@ namespace ProyectoCompiladores
             {
                 foreach (Variable var in clase.Variables)         //Recorre las variables de cada clase
                 {
-                    if(var.Is_const)                                //Si la variable es de modo constante
+                    if(var.IsConst)                                //Si la variable es de modo constante
                     {
                         if(var.Tipo_valor.Equals("Id"))             //Caso en el que la variable de tipo const tiene asignado otra variable
                         {

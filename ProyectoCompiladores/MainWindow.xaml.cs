@@ -76,7 +76,7 @@ namespace ProyectoCompiladores
             if (clasePrueba != null)
             {
                 // Creando Analizador Lexico
-                analizador_lexico = new Analizador_lexico(@"C:\Users\Legendary Dragon\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
+                analizador_lexico = new Analizador_lexico(@"C:\Users\Miguel\Documents\ProyectoCompiladores\Fuentes\automata_1.txt");
                 analizador_lexico.cargarAutomata(); // Cargando Automata
                 analizador_lexico.procesa(clasePrueba); // Evalua clasePrueba
                 

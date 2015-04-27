@@ -54,11 +54,17 @@ namespace ProyectoCompiladores
         string tipo;
         bool is_const;
         string valor;
+        string tipo_valor;
         public Variable()
         {
             mod = "private";
             is_const = false;
             valor = "";
+        }
+        public string Tipo_valor
+        {
+            get { return tipo_valor; }
+            set { tipo_valor = value; }
         }
         public string Id
         {
@@ -104,11 +110,12 @@ namespace ProyectoCompiladores
         string id;
         string tipo;
         List<string> tiposFirma;
-        List<string> idTIpos_firma;
+        List<string> idTipos_firma;
         public Metodo()
         {
             mod = "public";
             tiposFirma = new List<string>();
+            idTipos_firma = new List<string>();
         }
         //getters y setters
         public string Id
@@ -131,7 +138,7 @@ namespace ProyectoCompiladores
             get { return tiposFirma; }
             set { tiposFirma = value; }
         }
-        public List<string> idTipos_firma
+        public List<string> IdTipos_firma
         {
             get { return idTipos_firma; }
             set { idTipos_firma = value; }
