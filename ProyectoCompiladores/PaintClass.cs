@@ -80,8 +80,11 @@ namespace ProyectoCompiladores
 
             String texto = ""; // Texto para asignarse a todos los Label
             String mod = "Error, no hay Mod"; // Este Mod cambiará en el foreach, debe inicializarse forzosamente
+            string extends = ""; // Captura de "extends" si es que extiende
+            string constante = "", igual = ""; // Captura de constante e igual si es que existe
 
             int columna = 0; // Columna para el control de layout en grid de las clases
+            int contador = 0; // Contador de número de variables y métodos en los foreach
 
             // Recorrer todas las clases
             foreach (Clase_valores clase in tablaSimbolos.Clases)
@@ -121,47 +124,47 @@ namespace ProyectoCompiladores
                         mod = "&";
                         break;
                 }
-                string extends = "";
+
+                // Si extiende, agrega "extends"
                 if (clase.Extend != "") extends = "extends";
 
+                // Asignado al Label de toda la infor de la Clase
                 nombreClaseLabel.Content = mod + " " + clase.Id + " " + extends + clase.Extend;
 
-                
-                
-
-                int contador = 0;
+                contador = 0;
                 foreach (Variable variable in clase.Variables)
                 {
-                    string constante = "", igual = "";
+                    // Si hay constante, agrega "const"
                     if (variable.IsConst) { constante = "const"; igual = " = "; }
 
+                    // Guardado del texto de info de la Variable
                     texto = texto + variable.Mod + " " + constante + " " + variable.Tipo + " " + variable.Id + igual + variable.Valor + ";";
 
-                    if (contador < numAtributos) texto = texto + "\n";
+                    if (contador < numAtributos) texto = texto + "\n"; // El último no agrega salto de línea
                     contador++;
                 }
 
-                atributosLabel.Content = texto;
+                atributosLabel.Content = texto; // Asignado del texto al Label atributos
 
-                // METODOS
-
-                
                 texto = "";
                 contador = 0;
                 foreach (Metodo metodo in clase.Metodos)
                 {
+                    // Guardado del texto de info del Método
                     texto = metodo.Mod + " " + metodo.Id + "(" + ")" + ";";
 
-                    if (contador < numAtributos) texto = texto + "\n";
+                    if (contador < numAtributos) texto = texto + "\n"; // El último no agrega salto de línea
                     contador++;
                 }
 
-                metodosLabel.Content = texto;
+                metodosLabel.Content = texto; // Asignado del texto al Label métodos
 
-                posicionarElemento(nombreClaseLabel, 0, 0);
-                posicionarElemento(atributosLabel, 1, 0);
-                posicionarElemento(metodosLabel, 2, 0);
+                // Posicionamiento de elementos
+                posicionarElemento(nombreClaseLabel, 0, 0); // Fila 1: Clase
+                posicionarElemento(atributosLabel, 1, 0); // Fila2: Atributos
+                posicionarElemento(metodosLabel, 2, 0); // Fila3: Métodos
 
+                // Se agregan al grid de la Clase
                 claseGrid.Children.Add(nombreClaseLabel);
                 claseGrid.Children.Add(atributosLabel);
                 claseGrid.Children.Add(metodosLabel);
