@@ -33,7 +33,7 @@ namespace ProyectoCompiladores
         String nombreArchivo;
         Analizador_lexico analizador_lexico;
         Analizador_Sintactico analizador_sintactico;
-
+        Analizador_Semantico analizador_semantico;
         public MainWindow()
         {
             InitializeComponent();
@@ -86,7 +86,9 @@ namespace ProyectoCompiladores
                 // Creando un Hilo para Analizador Sintactico
                 Thread AS = new Thread(new ThreadStart(analizador_sintactico.ASintactico));
                 AS.Start();
-
+                AS.Join();
+                analizador_semantico = new Analizador_Semantico(analizador_sintactico);
+                analizador_semantico.Error = analizador_semantico.clase_duplicada();
                 // AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(analizadorSintactico)
             }
             else

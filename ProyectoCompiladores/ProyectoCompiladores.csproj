@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Analizador_Semantico.cs" />
     <Compile Include="Analizador_Sintactico.cs" />
     <Compile Include="TablaSimbolos.cs" />
     <Page Include="MainWindow.xaml">

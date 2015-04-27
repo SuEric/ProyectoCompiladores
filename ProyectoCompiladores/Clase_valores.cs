@@ -104,7 +104,7 @@ namespace ProyectoCompiladores
         string id;
         string tipo;
         List<string> tiposFirma;
-
+        List<string> idTIpos_firma;
         public Metodo()
         {
             mod = "public";
@@ -130,6 +130,11 @@ namespace ProyectoCompiladores
         { 
             get { return tiposFirma; }
             set { tiposFirma = value; }
+        }
+        public List<string> idTipos_firma
+        {
+            get { return idTipos_firma; }
+            set { idTipos_firma = value; }
         }
         public void reset()
         {
