@@ -453,6 +453,7 @@ namespace ProyectoCompiladores
             {
                 nuevo_metodo.TiposFirma.Add(token[1]);  //Asigna el tipo  correspondiete al atributo
                 Tipo1();                                 //Consume el tipo
+                nuevo_metodo.idTipos_firma.Add(token[1]);
                 Consumir("Id", 0);                      //Consume el id, no se almacena
                 Firma1();                               //Recursion para bucar mas atributos en la firma
             }

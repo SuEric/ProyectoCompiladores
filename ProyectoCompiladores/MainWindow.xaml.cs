@@ -30,7 +30,7 @@ namespace ProyectoCompiladores
         String clasePrueba;
         Analizador_lexico analizador_lexico;
         Analizador_Sintactico analizador_sintactico;
-
+        Analizador_Semantico analizador_semantico;
         public MainWindow()
         {
             InitializeComponent();
@@ -71,14 +71,16 @@ namespace ProyectoCompiladores
 
             if (clasePrueba != null)
             {
-                analizador_lexico = new Analizador_lexico(@"C:\Users\sueric16\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
+                analizador_lexico = new Analizador_lexico(@"C:\Users\Miguel\Documents\ProyectoCompiladores\Fuentes\automata_1.txt");
                 analizador_lexico.cargarAutomata();
                 analizador_lexico.procesa(clasePrueba);
                 analizador_sintactico = new Analizador_Sintactico(analizador_lexico);
 
                 Thread AS = new Thread(new ThreadStart(analizador_sintactico.ASintactico));
                 AS.Start();
-
+                AS.Join();
+                analizador_semantico = new Analizador_Semantico(analizador_sintactico);
+                analizador_semantico.Error = analizador_semantico.clase_duplicada();
                 // AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(analizadorSintactico)
             }
             else
