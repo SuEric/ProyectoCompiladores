@@ -360,6 +360,7 @@ namespace ProyectoCompiladores
                 {
                     aux_mod = nueva_variable.Mod;
                     aux_tipo = nueva_variable.Tipo;
+                    nueva_variable.Tipo_valor = token[0];
                     nueva_variable.Id = v;                      //Asigna el Id guardado a una nueva variable
                     nueva_variable.asigna_const(token[1]);      //Asigna el valor encontrado en la sentencia
                     nueva_clase.Variables.Add(nueva_variable);  //Agrega la variable a la clase que corresponde
