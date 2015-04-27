@@ -17,13 +17,15 @@ namespace ProyectoCompiladores
         Grid canvasGrid;
 
         TablaSimbolos tablaSimbolos;
-        int contadorClases; 
+        int contadorClases;
+        int numeroColumnas;
 
         public PaintClass(Grid canvasGrid, TablaSimbolos tablaSimbolos)
         {
             this.canvasGrid = canvasGrid;
-            contadorClases = 0;
             this.tablaSimbolos = tablaSimbolos;
+            contadorClases = 0;
+            numeroColumnas = 6;
         }
 
         public void pintarClase(String nombreClase, int numAtributos, int numMetodos)
@@ -71,14 +73,23 @@ namespace ProyectoCompiladores
 
         public void PintaClases()
         {
-            int columna = 0;
+            // Labels de info de Clase, Atributos y Métodos
+            Label nombreClaseLabel = new Label();
+            Label atributosLabel = new Label();
+            Label metodosLabel = new Label();
+
+            String texto = ""; // Texto para asignarse a todos los Label
+            String mod = "Error, no hay Mod"; // Este Mod cambiará en el foreach, debe inicializarse forzosamente
+
+            int columna = 0; // Columna para el control de layout en grid de las clases
+
+            // Recorrer todas las clases
             foreach (Clase_valores clase in tablaSimbolos.Clases)
             {
                 // Obtenemos Número de Atributos y Número de Métodos
                 int numAtributos = clase.Variables.Count();
                 int numMetodos = clase.Metodos.Count();
-                String mod = "protected"; // Obteniendo el Modificador de la clase
-
+                
                 // Creamos un Grid para Seccionar Nombre de Clase, Atributos, Métodos
                 Grid claseGrid = new Grid();
 
@@ -96,9 +107,8 @@ namespace ProyectoCompiladores
                 claseGrid.RowDefinitions.Add(rowClase);
                 claseGrid.RowDefinitions.Add(rowAtributos);
                 claseGrid.RowDefinitions.Add(rowMetodos);
-                
 
-                Label nombreClaseLabel = new Label();
+                // Asignar +, -, & Dependiendo el Modificador
                 switch (clase.Mod)
                 {
                     case "public":
@@ -109,16 +119,15 @@ namespace ProyectoCompiladores
                         break;   
                     case "protected":
                         mod = "&";
-                        break;      
+                        break;
                 }
-
                 string extends = "";
                 if (clase.Extend != "") extends = "extends";
 
                 nombreClaseLabel.Content = mod + " " + clase.Id + " " + extends + clase.Extend;
 
-                Label atributosLabel = new Label();
-                String texto = "";
+                
+                
 
                 int contador = 0;
                 foreach (Variable variable in clase.Variables)
@@ -136,7 +145,7 @@ namespace ProyectoCompiladores
 
                 // METODOS
 
-                Label metodosLabel = new Label();
+                
                 texto = "";
                 contador = 0;
                 foreach (Metodo metodo in clase.Metodos)
@@ -158,7 +167,7 @@ namespace ProyectoCompiladores
                 claseGrid.Children.Add(metodosLabel);
 
 
-                int row = contadorClases / 6; // Obtenemos fila
+                int row = contadorClases / numeroColumnas; // Obtenemos fila
 
                 if (contadorClases == 0) {
                     columna = 0;
@@ -167,7 +176,7 @@ namespace ProyectoCompiladores
                     columna += 2;
                 }
 
-                if (contadorClases % 6 == 0 && contadorClases > 5) columna = 0;
+                if (contadorClases % numeroColumnas == 0 && contadorClases > (numeroColumnas-1) ) columna = 0;
 
                 Line line = new Line();
                 line.X1 = 0;
