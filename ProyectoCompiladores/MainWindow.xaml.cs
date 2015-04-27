@@ -105,6 +105,8 @@ namespace ProyectoCompiladores
             // Errores
             String errores = analizador_semantico.errores;
             MessageBox.Show(nombreArchivo);
+
+            erroresListBox.Items.Clear();
             erroresListBox.Items.Add(errores); // Se muestran los errores encontrados
         }
 
