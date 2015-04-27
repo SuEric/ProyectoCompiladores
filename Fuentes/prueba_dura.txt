@@ -1,4 +1,4 @@
-public class Prueba {
+public class prueba_dura {
 	int x, y;
 	const int g = 10;
 

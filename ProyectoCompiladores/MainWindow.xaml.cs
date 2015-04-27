@@ -76,7 +76,7 @@ namespace ProyectoCompiladores
             if (clasePrueba != null)
             {
                 // Creando Analizador Lexico
-                analizador_lexico = new Analizador_lexico(@"C:\Users\Miguel\Documents\ProyectoCompiladores\Fuentes\automata_1.txt");
+                analizador_lexico = new Analizador_lexico(@"C:\Users\sueric16\Documents\GitHub\ProyectoCompiladores\Fuentes\automata_1.txt");
                 analizador_lexico.cargarAutomata(); // Cargando Automata
                 analizador_lexico.procesa(clasePrueba); // Evalua clasePrueba
                 
@@ -88,34 +88,24 @@ namespace ProyectoCompiladores
                 AS.Start();
                 AS.Join();
                 analizador_semantico = new Analizador_Semantico(analizador_sintactico);
-                analizador_semantico.Error = analizador_semantico.clase_duplicada();
-                // AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(analizadorSintactico)
+
+                // Obtenemos el nombre del archivo
+                string[] rutas = rutaAchivo.Split(new Char[] { '.' });
+                string[] rutas2 = rutas[0].Split(new Char[] { '\\' });
+
+                nombreArchivo = rutas2[(rutas2.Count() - 1)];
+
+                analizador_semantico.analiza(nombreArchivo);
             }
             else
             {
                 MessageBox.Show("Debe escribir código o abrir un archivo primero");
             }
 
-
-
             // Errores
-            String[] errores = new String[10];
-
-            errores[1] = "Error 1 \n Error 2";
-            errores[2] = "Error 1";
-            errores[3] = "Error 1";
-            errores[4] = "Error 1";
-            errores[5] = "Error 1";
-            errores[6] = "Error 1";
-            errores[7] = "Error 1";
-            errores[8] = "Error 1";
-            errores[9] = "Error 1";
-
-            // Mostrar todos errores
-            for (int i = 0; i < errores.Length; i++)
-            {
-                erroresListBox.Items.Add(errores[i]);
-            }
+            String errores = analizador_semantico.errores;
+            MessageBox.Show(nombreArchivo);
+            erroresListBox.Items.Add(errores);
         }
 
         private void openFileButton_Click(object sender, RoutedEventArgs e)
@@ -131,7 +121,7 @@ namespace ProyectoCompiladores
             if (openFileDialog.ShowDialog() == WinForms.DialogResult.OK)
             {
                 rutaAchivo = openFileDialog.FileName;
-                nombreArchivo = openFileDialog.FileNames[0];
+
                 // Objeto lectura de archivo
                 FileStream fileStream = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate);
 

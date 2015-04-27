@@ -1,0 +1,70 @@
+public class pruebaDura {
+	int x, y;
+	const int g = 10;
+
+	public void funcion1(char c, float f);
+	int funcion2(Prueba pruebita);
+}
+
+protected class ClaseA extends pruebaDura {
+	protected int x, y;
+	public const float a, b, c, d, e = 0.6;
+	const float w, z, y, v = 10.10101;
+	pruebaDura attrPrueba;
+
+	public float funcion ();
+	void funcionsota(ClaseA quehubo, pruebaDura pruebota);
+}
+
+class ClaseB extends ClaseA {
+	char car;
+	protected int a, y11;
+	public const char caracter, caracter2 = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public pruebaDura funcion (int var13);
+	private ClaseB funcionsota(ClaseB bien);
+}
+
+private class Vacia {
+	
+}
+
+class ClaseC {
+	public void compilar();
+}
+
+
+class ClaseD {
+	private ClaseC miVieja;
+}
+class x
+{
+	char car;
+	protected int d2, y11;
+	public const char caracterx, caracter2x = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public void fun (int var13);
+	private float function (int bien);
+}
+class A
+{
+	char car;
+	protected int a, y1;
+	public const char caracterwdw, caracter2xw = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public char func (int var13);
+	private char funcion  (char bien);
+}
+class xz
+{
+	char car;
+	protected int a1, y11;
+	public const char caracterf, caracterr2 = 10;
+	private const int w2, z1, y2, v13, q3 = y11;
+
+	public pruebaDura f (int var13);
+	private ClaseB f2 (ClaseB bien);
+}
