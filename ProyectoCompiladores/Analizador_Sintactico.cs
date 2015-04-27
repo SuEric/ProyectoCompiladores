@@ -356,11 +356,16 @@ namespace ProyectoCompiladores
             // =  { Id } { NumENtero } {RealSigno} {NumEnteroSigno}
             if (token[0].Equals("Id", 0) || token[0].Equals("NumEntero") || token[0].Equals("RealSigno") || token[0].Equals("NumEnteroSigno"))
             {
+                string t_valor= "Id";
+                if (!token[0].Equals("Id"))
+                {
+                    t_valor = token[0].Equals("RealSigno") ? "float" : "int";
+                }
                 foreach(string v in vars)                       //Ha concluido la recopilacion de variables en sentencia const
                 {
                     aux_mod = nueva_variable.Mod;
                     aux_tipo = nueva_variable.Tipo;
-                    nueva_variable.Tipo_valor = token[0];
+                    nueva_variable.Tipo_valor = t_valor;
                     nueva_variable.Id = v;                      //Asigna el Id guardado a una nueva variable
                     nueva_variable.asigna_const(token[1]);      //Asigna el valor encontrado en la sentencia
                     nueva_clase.Variables.Add(nueva_variable);  //Agrega la variable a la clase que corresponde

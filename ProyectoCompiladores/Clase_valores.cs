@@ -60,6 +60,7 @@ namespace ProyectoCompiladores
             mod = "private";
             is_const = false;
             valor = "";
+            tipo_valor = "";
         }
         public string Tipo_valor
         {
